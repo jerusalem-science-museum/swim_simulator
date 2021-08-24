@@ -5,7 +5,7 @@
 sudo apt-get update
 sudo apt-get upgrade -y
 
-sudo apt-get install -y git python-usb python3-usb ffmpeg python3-pip apache2
+sudo apt-get install -y git python-usb python3-usb ffmpeg python3-pip apache2 parallel
 
 pip3 install --upgrade pip 
 sudo pip3 install --upgrade libusb pyusb requests
