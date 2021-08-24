@@ -12,6 +12,8 @@ libusb - `pip install libusb`
 
 ubs packages - `sudo apt-get install python-usb python3-usb`
 
+parallel - `sudo apt-get install parallel`
+
 pyusb - `pip install pyusb`
 
 ffmpeg - `sudo apt-get install ffmpeg`

@@ -1,3 +1,3 @@
 #! /usr/bin/bash 
 
-parallel ::: "python3 src/app.py" "python3 src/server.py"
+parallel ::: "sudo python3 src/app.py" "python3 src/server.py"
