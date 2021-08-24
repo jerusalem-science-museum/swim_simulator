@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <title>Rowing Simulator</title>
+    <style>
+        .row.content {height: 550px}
+
+        #video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+        }
+        #content {
+            position: fixed;
+            bottom: 1;
+            color: red;
+            width: 100%;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted width="320" height="240" controls loop id="video" >
+        <source src="video.mp4" type="video/mp4">
+    </video> 
+    <!-- TODO install ffmpeg -->
+    
+    
+    <div class="container-fluid">
+        <div class="row content" id="content">
+          <br>
+          
+          <div class="col-sm-9">
+            <div class="well">
+              <h4>Dashboard</h4>
+              <p>Data From The Monitor</p>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="well">
+                  <h4>Speed</h4>
+                  <p id="speed"></p> 
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="well">
+                  <h4>Pace</h4>
+                  <p id="pace"></p> 
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="well">
+                  <h4>Distance</h4>
+                  <p id="distance"></p> 
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="well">
+                  <h4>Calories</h4>
+                  <p id="calhr"></p> 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <script>
+            var speed = '0';
+            var distance = '0'
+            var pace = '0'
+            var calhr = '0'
+            
+            function get_data(){
+                $.ajax
+                ({
+                    type: "POST",
+                    url: 'http://127.0.0.1:8000',
+                    dataType: 'json',
+                    async: false,
+                    data: JSON.stringify({ "msg": "getData"}),
+                    
+                    success: function (data,status) {
+                        if(status != 'success'){
+                            console.log('The server might be down.')
+                        }
+                        speed = data.speed;
+                        pace = data.pace;
+                        distance = data.distance;
+                        calhr = data.calhr;
+                    }
+                })
+            }
+            
+            setInterval(function(){
+                get_data();
+                
+                const video =  document.querySelector('video');
+                video.playbackRate = speed;
+                
+                document.getElementById('speed').innerHTML = speed;
+                document.getElementById('pace').innerHTML = pace;
+                document.getElementById('distance').innerHTML = distance;
+                document.getElementById('calhr').innerHTML = calhr;
+            },3000);
+      </script>
+</body>
+</html>
