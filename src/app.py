@@ -41,11 +41,13 @@ def get_metric(metric , monitor):
 
 # the main function that runs the client.
 def run():
-    monitor = get_erg()
     
+    monitor = get_erg()
+
     # while loop that send a request to update the speed every X secondes.
     while True:
         try:
+
             r = requests.post('http://127.0.0.1:8000', data = json.dumps(get_data(monitor)).encode('utf-8'))
             print(r.json()) # print the responce from the server.
             resp =  r.json()
@@ -60,7 +62,11 @@ def run():
                     else:
                         break
 
-        except Exception:
+        except AttributeError:
+            print('The monitor is not connected.')
+
+        except Exception as e:
+            print(e)
             print('An error has occurred')
             print('The server might be down.')
             pass
