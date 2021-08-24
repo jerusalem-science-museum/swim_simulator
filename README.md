@@ -26,14 +26,6 @@ cd to the desktop:
 
 `cd ~/Desktop`
 
-make a directory for the git clone
-
-`mkdir git`
-
-cd into git
-
-`cd git`
-
 clone the project
 
 `git clone https://github.com/jerusalem-science-museum/swim_simulator`
@@ -47,8 +39,8 @@ run:
 
 add the following lines to the configuration:
 ```
-		DocumentRoot /home/mada/git/swin_simulator/src/www/
-		<Directory /home/mada/git/>swin_simulator/src/www/>
+		DocumentRoot /home/mada/Desktop/swin_simulator/src/www/
+		<Directory /home/mada/Desktop/swin_simulator/src/www/>
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride None
                 Require all granted
@@ -64,7 +56,7 @@ than reload apache for the changes to take effect
 
 change the user ownership on the video file 
 
-`sudo chown www-data:mada video.mp4`
+`sudo chown www-data:mada src/www/video.mp4`
 
 navigate to `http://127.0.0.1` to make sure the installation was successful. 
 
