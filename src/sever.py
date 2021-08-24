@@ -12,6 +12,7 @@ pace = '0'
 distance = '0'
 calhr = '0'
 
+
 counter = 0
 
 serverSocket =  socket.socket(socket.AF_INET , socket.SOCK_STREAM)
