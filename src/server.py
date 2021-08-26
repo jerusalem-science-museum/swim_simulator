@@ -38,10 +38,9 @@ def isOff(MSGspeed , speed):
         counter=counter+1
     return False
 
-
-# TODO send 2 speed params one for controling the video and one for display. 
-
 # function to calculate the speed based on the limits of the js playback function.
+# TODO increse the speed gradualy
+
 def calc_speed(speed):
     speed = float(speed / 2)
     speed /= 10
@@ -91,6 +90,7 @@ while True:
                 pace = '0'
                 distance = '0'
                 calhr = '0'
+                power = '0'
                 print('Monitor is not in use. reseting the data.')
 
         
