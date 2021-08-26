@@ -25,7 +25,8 @@ def get_erg():
 def reconnect():
     
     r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'DissconnectError'}).encode('utf-8'))
-    print(r.json()) # print the responce from the server.
+    resp = r.json() 
+    print(resp['msg']) # print the responce from the server.
     
     while True:
         erg_list = conn.find()
@@ -35,7 +36,8 @@ def reconnect():
                 time.sleep(1)
             else:
                 r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'DissconnectErrorFixed'}).encode('utf-8'))
-                print(r.json())
+                resp = r.json()
+                print(resp['msg'])
                 return erg
 
 # function that converts the data from the monitor to a dict. 
@@ -73,8 +75,8 @@ def run():
     while True:
         try:
             r = requests.post('http://127.0.0.1:8000', data = json.dumps(get_data(monitor)).encode('utf-8'))
-            print(r.json()) # print the responce from the server.
             resp =  r.json()
+            print(resp['msg']) # print the responce from the server.
 
             # if the sever send a reset messeage the app will sleep until there is a change in the speed.
             if resp['msg'] == 'reset':

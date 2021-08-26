@@ -103,7 +103,7 @@ while True:
         elif msg['msg'] == 'DissconnectError':
             disconnect = True
 
-            a = {"msg" : "200"}
+            a = {"msg" : "Disconnected"}
             resp = json.dumps(a)
 
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
@@ -112,9 +112,8 @@ while True:
         
         elif msg['msg'] == 'DissconnectErrorFixed':
             disconnect =  False
-            print('hit')
 
-            a = {"msg" : "OK"}
+            a = {"msg" : "Connected"}
             resp = json.dumps(a)
 
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))

@@ -65,7 +65,8 @@ navigate to `http://127.0.0.1` to make sure the installation was successful.
 
 ### Running the app 
 
-The app requires root permitions in order to run correct.
+The app requires root permitions in order to run correctly.
+
 run:
 
 `sudo su`
