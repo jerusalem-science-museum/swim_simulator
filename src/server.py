@@ -42,10 +42,10 @@ def isOff(MSGspeed , speed):
 # TODO increse the speed gradualy
 
 def calc_speed(speed):
-    speed = float(speed / 2)
+    speed = float(speed / 3)
     speed /= 10
     speed = max(speed, 0)
-    speed = min(speed, 2.2)
+    speed = min(speed,1.8)
     return speed
 
 while True:
