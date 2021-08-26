@@ -45,7 +45,7 @@ def calc_speed(speed):
     speed = float(speed / 3)
     speed /= 10
     speed = max(speed, 0)
-    speed = min(speed,1.8)
+    speed = min(speed,1.5)
     return speed
 
 while True:
