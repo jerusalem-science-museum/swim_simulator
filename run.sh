@@ -1,6 +1,6 @@
 #! /usr/bin/bash 
-# TODO abslout path 
-# parallel  ::: "sudo python3 src/app.py" "python3 src/server.py"
+
+cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 python3 src/server.py &
 python3 src/app.py
