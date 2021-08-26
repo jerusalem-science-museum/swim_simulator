@@ -97,7 +97,7 @@ while True:
         # client requests to receive the current speed 
         elif msg['msg'] == 'getData':
             
-            a = {'speed' : calc_speed(int(speed)) , 'power' : power , 'pace' : pace , 'distance' : distance , 'calhr' : calhr , 'disconnected' : disconnect}
+            a = {'speed' : str(calc_speed(int(speed))) , 'power' : power , 'pace' : pace , 'distance' : distance , 'calhr' : calhr , 'disconnected' : disconnect}
             resp = json.dumps(a)
             
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: *\nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
