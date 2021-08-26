@@ -66,9 +66,9 @@ while True:
             if not isOff(msg['speed'] , speed):
                 speed = msg['speed']
                 power = msg['speed']
-                pace = msg['pace']
+                pace = round(msg['pace'])
                 distance = msg['distance']
-                calhr = msg['calhr']
+                calhr = round(msg['calhr'])
 
 
 
