@@ -116,9 +116,9 @@
                 }
 
                 const video =  document.querySelector('video');
-                if(speed != new_speed){
-                  video.playbackRate = speed;
+                if(speed != new_speed || new_speed == 0){
                   speed = new_speed;
+                  video.playbackRate = speed;
                 }
                 
                 document.getElementById('power').innerHTML = power;
