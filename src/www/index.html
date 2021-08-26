@@ -94,7 +94,7 @@
                         if(status != 'success'){
                             console.log('The server might be down.')
                         }
-                        new_speed = data.speed;
+                        speed = data.speed;
                         power = data.power;
                         pace = data.pace;
                         distance = data.distance;
@@ -115,11 +115,9 @@
                   document.getElementById('diss').style.backgroundColor = 'green';
                 }
 
-                const video =  document.querySelector('video');
-                if(speed != new_speed || new_speed == 0){
-                  speed = new_speed;
-                  video.playbackRate = speed;
-                }
+                const video =  document.querySelector('video'); 
+                video.playbackRate = speed;
+                
                 
                 document.getElementById('power').innerHTML = power;
                 document.getElementById('pace').innerHTML = pace;
