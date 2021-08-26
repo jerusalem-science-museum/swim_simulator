@@ -18,9 +18,8 @@ git pull
 
 # setup the apache2 configuration
 sudo rm /etc/apache2/sites-enabled/000-default.conf
-sudo rm /etc/apache2/site-available/000-default.conf
 
-sudo mv /src/conf/000-default.conf /etc/apache2/sites-available/ 
+sudo cp /src/conf/000-default.conf /etc/apache2/sites-available/ 
 
 sudo a2ensite 000-default.conf
 

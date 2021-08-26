@@ -1,5 +1,6 @@
 import socket 
 import json
+import sys
 
 
 HOST = '127.0.0.1'
@@ -11,7 +12,7 @@ speed = '0'
 pace = '0'
 distance = '0'
 calhr = '0'
-target_speed = '0'
+disconnect = False
 
 
 counter = 0
@@ -19,10 +20,12 @@ counter = 0
 serverSocket =  socket.socket(socket.AF_INET , socket.SOCK_STREAM)
 
 # server listening on localhost port 8000
-serverSocket.bind(( HOST , PORT))
-serverSocket.listen()
-print(f'Server is up. Listening for requests on {HOST}:{PORT}')
-
+try:
+    serverSocket.bind(( HOST , PORT))
+    serverSocket.listen()
+    print(f'Server is up. Listening for requests on {HOST}:{PORT}')
+except OSError:
+    sys.exit('The address is in use plseas wait 1 min before trying again')
 # function to check if the monitor is not in use. 
 # it checks the speed and if the speed hasent changed for 15 secondes it returns true.
 def isOff(MSGspeed , speed):
@@ -35,14 +38,14 @@ def isOff(MSGspeed , speed):
     return False
 
 
+# TODO send 2 speed params one for controling the video and one for display. 
+
 # function to calculate the speed based on the limits of the js playback function.
 def calc_speed(speed):
     speed = float(speed / 2)
-    speed = speed / 10
-    if speed < 0:
-        speed = 0
-    if speed > 3.8:
-        speed = 3.8
+    speed /= 10
+    speed = max(speed, 0)
+    speed = min(speed, 2.2)
     return speed
 
 while True:
@@ -92,15 +95,39 @@ while True:
         # client requests to receive the current speed 
         elif msg['msg'] == 'getData':
             
-            a = {'speed' : calc_speed(int(speed)) , 'pace' : pace , 'distance' : distance , 'calhr' : calhr}
+            a = {'speed' : calc_speed(int(speed)) , 'pace' : pace , 'distance' : distance , 'calhr' : calhr , 'disconnected' : disconnect}
             resp = json.dumps(a)
             
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: *\nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
         
+        elif msg['msg'] == 'DissconnectError':
+            disconnect = True
+
+            a = {"msg" : "200"}
+            resp = json.dumps(a)
+
+            clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
+
+
+        
+        elif msg['msg'] == 'DissconnectErrorFixed':
+            disconnect =  False
+            print('hit')
+
+            a = {"msg" : "OK"}
+            resp = json.dumps(a)
+
+            clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
+
         clientConnected.shutdown(1)
-    
+
     # if there is an error in the request the server will send an responce back.
     except json.decoder.JSONDecodeError:
+        disconnect = False
+        a = {"msg" : "JsonError"}
+        resp = json.dumps(a)
+
+        clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))        
         clientConnected.shutdown(1)
         pass
     except Exception as e: 

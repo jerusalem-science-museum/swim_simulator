@@ -25,14 +25,19 @@
             width: 100%;
             padding: 5px;
         }
+        #diss{
+          height: 25px;
+          width: 25px;
+          background-color: green;
+          border-radius: 50%;
+          display: inline-block;
+        }
     </style>
 </head>
 <body>
     <video autoplay muted width="320" height="240" controls loop id="video" >
         <source src="video.mp4" type="video/mp4">
-    </video> 
-    <!-- TODO install ffmpeg -->
-    
+    </video>  
     
     <div class="container-fluid">
         <div class="row content" id="content">
@@ -68,6 +73,12 @@
                   <p id="calhr"></p> 
                 </div>
               </div>
+              <div class="col-sm-3">
+                <div class="well">
+                  <h4>Connected</h4>
+                  <div id="diss"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -78,6 +89,7 @@
             var distance = '0'
             var pace = '0'
             var calhr = '0'
+            var isDisconnected = 'false'
 
             function get_data(){
                 $.ajax
@@ -96,6 +108,7 @@
                         pace = data.pace;
                         distance = data.distance;
                         calhr = data.calhr;
+                        isDisconnected = data.disconnected
                     }
                 })
             }
@@ -103,6 +116,14 @@
             setInterval(function(){
                 get_data();
                 
+
+                if(isDisconnected == true){
+                  document.getElementById('diss').style.backgroundColor = 'red';
+                }
+                else{
+                  document.getElementById('diss').style.backgroundColor = 'green';
+                }
+
                 const video =  document.querySelector('video');
                 video.playbackRate = speed;
                 
@@ -110,7 +131,7 @@
                 document.getElementById('pace').innerHTML = pace;
                 document.getElementById('distance').innerHTML = distance;
                 document.getElementById('calhr').innerHTML = calhr;
-            },1500);
+            },2000);
       </script>
 </body>
 </html>

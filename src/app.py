@@ -17,14 +17,16 @@ def get_erg():
         # connect to the monitor
         erg_list = conn.find()
         for i in erg_list:
-            erg = conn.PyErg(i)
-            print(erg)
-            return erg
+            return conn.PyErg(i)
     except:
         sys.exit('An error has occurred. The monitor is not connected.\n Or the user isnt root.')
 
 # function to reconnect to the monitor in case of a disconnect while the app is running.
 def reconnect():
+    
+    r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'DissconnectError'}).encode('utf-8'))
+    print(r.json()) # print the responce from the server.
+    
     while True:
         erg_list = conn.find()
         for i in erg_list:
@@ -32,31 +34,32 @@ def reconnect():
             if erg is None:
                 time.sleep(1)
             else:
+                r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'DissconnectErrorFixed'}).encode('utf-8'))
+                print(r.json())
                 return erg
-
 
 # function that converts the data from the monitor to a dict. 
 def get_data(monitor):
         # check if the monitor has been disconnected.
-        if monitor is not None:
-            data = monitor.get_monitor()
-            
-            return {'msg' : 'updateData', 'speed' : data['power'] , 'pace' : data['pace'] , 'distance' : data['distance'] , 'calhr' : data['calhr']}
-        else:
-            raise DisconnectError()
+    if monitor is None:
+        raise DisconnectError()
+
+    data = monitor.get_monitor()
+
+    return {'msg' : 'updateData', 'speed' : data['power'] , 'pace' : data['pace'] , 'distance' : data['distance'] , 'calhr' : data['calhr']}
 
 # func that returns the raw data based on the disaired metric
 def get_metric(metric , monitor):
     # check if the monitor has been disconnected.
-    if monitor is not None:
-        # get the raw data from the monitor 
-        data = monitor.get_monitor()
-        try:
-            return data[metric]
-        except:
-            print('An invalid metric has been requested from the monitor.')
-    else:
+    if monitor is None:
         raise DisconnectError()
+
+    # get the raw data from the monitor 
+    data = monitor.get_monitor()
+    try:
+        return data[metric]
+    except:
+        print('An invalid metric has been requested from the monitor.')
 
 
 # the main function that runs the client.
@@ -72,7 +75,7 @@ def run():
             r = requests.post('http://127.0.0.1:8000', data = json.dumps(get_data(monitor)).encode('utf-8'))
             print(r.json()) # print the responce from the server.
             resp =  r.json()
-            
+
             # if the sever send a reset messeage the app will sleep until there is a change in the speed.
             if resp['msg'] == 'reset':
                 resp_speed = resp['speed']
@@ -85,7 +88,7 @@ def run():
 
         except UnboundLocalError:
             monitor = reconnect()
-        
+
         except DisconnectError:
             monitor = reconnect()
 
@@ -95,14 +98,11 @@ def run():
         except Exception as e:
             print('An error has occurred')
             print('The server might be down.')
-            pass
+        
         time.sleep(1) # sleep for 1 secondes. 
 
 
 if __name__ == '__main__':
-    
-    # if the monitor is disconnected run will return false. 
-    # TODO handle the disconnect. 
     run()    
 
 
