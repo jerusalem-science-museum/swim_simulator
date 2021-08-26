@@ -11,6 +11,12 @@
     <style>
         .row.content {height: 550px}
 
+        .nav-item{
+          padding-right: 1.2em;
+          padding-left: 1.2rem;
+          text-align: center;
+        }
+
         #video {
             position: fixed;
             right: 0;
@@ -39,50 +45,33 @@
         <source src="video.mp4" type="video/mp4">
     </video>  
     
-    <div class="container-fluid">
-        <div class="row content" id="content">
-          <br>
-          
-          <div class="col-sm-9">
-            <div class="well">
-              <h4>Dashboard</h4>
-              <p>Data From The Monitor</p>
-            </div>
-            <div class="row">
-              <div class="col-sm-3">
-                <div class="well">
-                  <h4>Power</h4>
-                  <p id="power"></p> 
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="well">
-                  <h4>Pace</h4>
-                  <p id="pace"></p> 
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="well">
-                  <h4>Distance</h4>
-                  <p id="distance"></p> 
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="well">
-                  <h4>Calories</h4>
-                  <p id="calhr"></p> 
-                </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="well">
-                  <h4>Connected</h4>
-                  <div id="diss"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-bottom bg-light">
+      <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+          <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                  <h5>Power</h5>
+                  <div id="power"></div>
+              </li>
+              <li class="nav-item">
+                <h5>Pace</h5>
+                <div id="pace"></div>
+              </li>
+              <li class="nav-item">
+                <h5>Distance</h5>
+                <div id="distance"></div>
+              </li>
+              <li class="nav-item">
+                <h5>Calories</h5>
+                <div id="calhr"></div>
+              </li>
+              <li class="nav-item">
+                <h5>Connected</h5>
+                <div id="diss"></div>
+              </li>
+          </ul>
       </div>
+  </nav>
+  
       
       <script>
             var speed = '0';
