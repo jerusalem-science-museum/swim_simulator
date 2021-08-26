@@ -9,6 +9,7 @@ PORT = 8000
 
 # the server stores the current metrics of the monitor. 
 speed = '0'
+power = '0'
 pace = '0'
 distance = '0'
 calhr = '0'
@@ -65,6 +66,7 @@ while True:
             # check if the monitor is not in use.
             if not isOff(msg['speed'] , speed):
                 speed = msg['speed']
+                power = msg['speed']
                 pace = msg['pace']
                 distance = msg['distance']
                 calhr = msg['calhr']
@@ -95,7 +97,7 @@ while True:
         # client requests to receive the current speed 
         elif msg['msg'] == 'getData':
             
-            a = {'speed' : calc_speed(int(speed)) , 'pace' : pace , 'distance' : distance , 'calhr' : calhr , 'disconnected' : disconnect}
+            a = {'speed' : calc_speed(int(speed)) , 'power' : power , 'pace' : pace , 'distance' : distance , 'calhr' : calhr , 'disconnected' : disconnect}
             resp = json.dumps(a)
             
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: *\nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
