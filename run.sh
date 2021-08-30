@@ -6,4 +6,4 @@ cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 python3 src/server.py &
 echo -e "mada\n" | sudo -S python3 src/app.py &
 
-firefox -kiosk http://127.0.0.1/ 
+firefox -kiosk http://127.0.0.1/index.html 
