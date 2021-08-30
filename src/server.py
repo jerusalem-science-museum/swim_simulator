@@ -14,9 +14,10 @@ pace = '0'
 distance = '0'
 calhr = '0'
 disconnect = False
+gameEnded = False
+gameTime = 30
+counter = gameTime 
 
-
-counter = 0
 
 serverSocket =  socket.socket(socket.AF_INET , socket.SOCK_STREAM)
 
@@ -57,47 +58,54 @@ while True:
         data = tmp.decode('utf-8').partition('\r\n\r\n') # extract the massage body.
         print(f"received connection from {clientAddress[0]}:{clientAddress[1]}  Message: {data[2]}")
         msg = json.loads(data[2]) # convert body to json.
-    
+
+        # TODO send back reset to the gameended.
+
         # the server has a list of actions that he can handle.
         # client send a request to update the speed.
         if msg['msg'] == 'updateData':
 
-            # check if the monitor is not in use.
-            if not isOff(msg['speed'] , speed):
-                speed = msg['speed']
-                power = msg['speed']
-                pace = round(msg['pace'])
-                distance = msg['distance']
-                calhr = round(msg['calhr'])
+            speed = msg['speed']
+            power = msg['speed']
+            pace = round(msg['pace'])
+            distance = msg['distance']
+            calhr = round(msg['calhr'])
 
 
+            print(f"Data updated. current speed: {speed} , pace: {pace} , distance: {distance} , calhr: {calhr} ")
+            a = {"msg" : "200" , "ended" : gameEnded , "speed" : speed}
+            resp = json.dumps(a)
 
-                print(f"Data updated. current speed: {speed} , pace: {pace} , distance: {distance} , calhr: {calhr} ")
-                a = {"msg" : "200"}
-                resp = json.dumps(a)
+            clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
 
-                clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
-
-            # if the monitor is not in use reset the valuse.
-            else:
-                # send the reset message and the current speed. 
-                a = {"msg" : "reset" , 'speed' : speed}
-                resp = json.dumps(a)
-
-                clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
-
+            if counter < 0 or counter == 0:
                 speed = '0'
-                pace = '0'
+                power = '0'
                 distance = '0'
                 calhr = '0'
-                power = '0'
-                print('Monitor is not in use. reseting the data.')
+                pace = '0'
 
-        
+        # TODO send reset compleate msg. 
+        elif msg['msg'] == 'gameStarted':
+            gameEnded = False
+            counter = gameTime
+
+            a = {"msg" : "OK"}
+            resp = json.dumps(a)
+
+            clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
+
         # client requests to receive the current speed 
         elif msg['msg'] == 'getData':
             
-            a = {'speed' : calc_speed(int(speed)) , 'power' : power , 'pace' : pace , 'distance' : distance , 'calhr' : calhr , 'disconnected' : disconnect}
+            counter -= 1
+
+            if counter == 0:
+                gameEnded = True
+
+                print('game has ended. reseting the values.')
+
+            a = {'speed' : calc_speed(int(speed)) , 'power' : power , 'pace' : pace , 'distance' : distance , 'calhr' : calhr , 'disconnected' : disconnect , "time" : counter}
             resp = json.dumps(a)
             
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: *\nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))

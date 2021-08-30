@@ -48,7 +48,7 @@ def get_data(monitor):
 
     data = monitor.get_monitor()
 
-    return {'msg' : 'updateData', 'speed' : data['power'] , 'pace' : data['pace'] , 'distance' : data['distance'] , 'calhr' : data['calhr']}
+    return {'msg' : 'updateData', 'speed' : data['power'] , 'pace' : data['pace'] , 'distance' : data['distance'] , 'calhr' : data['calhr'] , "started" : True}
 
 # func that returns the raw data based on the disaired metric
 def get_metric(metric , monitor):
@@ -76,16 +76,23 @@ def run():
         try:
             r = requests.post('http://127.0.0.1:8000', data = json.dumps(get_data(monitor)).encode('utf-8'))
             resp =  r.json()
-            print(resp['msg']) # print the responce from the server.
+            print(resp) # print the responce from the server.
 
             # if the sever send a reset messeage the app will sleep until there is a change in the speed.
-            if resp['msg'] == 'reset':
+            if resp['ended'] == True:
                 resp_speed = resp['speed']
+                print('game ended')
+                time.sleep(10)
+                resp_speed = get_metric('power' , monitor)
+
                 while True:
                     # if the speed from the server and the speed that the monitor is reporting are the same it will sleep. 
                     if resp_speed == get_metric('power' , monitor) or get_metric('power' , monitor) == 0:
                         time.sleep(1)
                     else:
+                        r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'gameStarted'}).encode('utf-8'))
+                        resp =  r.json()
+                        print(resp) # print the responce from the server.
                         break
 
         except UnboundLocalError:
@@ -98,10 +105,11 @@ def run():
             print('The monitor is not connected.')
 
         except Exception as e:
+            print(e)
             print('An error has occurred')
             print('The server might be down.')
         
-        time.sleep(1) # sleep for 1 secondes. 
+        time.sleep(0.3) # sleep for 1 secondes. 
 
 
 if __name__ == '__main__':

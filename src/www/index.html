@@ -65,6 +65,10 @@
                 <div id="calhr"></div>
               </li>
               <li class="nav-item">
+                <h5>Time</h5>
+                <div id="time"></div>
+              </li>
+              <li class="nav-item">
                 <h5>Connected</h5>
                 <div id="diss"></div>
               </li>
@@ -74,13 +78,52 @@
   
       
       <script>
+            
             var speed = '0';
             var new_speed = '0';
             var power =  '0';
             var distance = '0';
             var pace = '0';
             var calhr = '0';
+            var time = '0';
             var isDisconnected = 'false';
+            
+            function Sound(source, volume, loop)
+              {
+                  this.source = source;
+                  this.volume = volume;
+                  this.loop = loop;
+                  var son;
+                  this.son = son;
+                  this.finish = false;
+                  this.stop = function()
+                  {
+                      document.body.removeChild(this.son);
+                  }
+                  this.start = function()
+                  {
+                      if (this.finish) return false;
+                      this.son = document.createElement("embed");
+                      this.son.setAttribute("src", this.source);
+                      this.son.setAttribute("hidden", "true");
+                      this.son.setAttribute("volume", this.volume);
+                      this.son.setAttribute("autostart", "true");
+                      this.son.setAttribute("loop", this.loop);
+                      document.body.appendChild(this.son);
+                  }
+                  this.remove = function()
+                  {
+                      document.body.removeChild(this.son);
+                      this.finish = true;
+                  }
+                  this.init = function(volume, loop)
+                  {
+                      this.finish = false;
+                      this.volume = volume;
+                      this.loop = loop;
+                  }
+              }
+
 
             function get_data(){
                 $.ajax
@@ -100,31 +143,51 @@
                         pace = data.pace;
                         distance = data.distance;
                         calhr = data.calhr;
+                        time =  data.time;
                         isDisconnected = data.disconnected
                     }
                 })
             }
-            
-            setInterval(function(){
-                get_data();
-                
 
-                if(isDisconnected == true){
+
+          var sound = new Sound('' , 80 , true);
+          sound.start();
+            
+
+
+            setInterval(() => {
+              get_data();
+              
+              if(isDisconnected == true){
                   document.getElementById('diss').style.backgroundColor = 'red';
                 }
-                else{
-                  document.getElementById('diss').style.backgroundColor = 'green';
+              else{
+                document.getElementById('diss').style.backgroundColor = 'green';
                 }
 
                 const video =  document.querySelector('video'); 
                 video.playbackRate = speed;
-                
-                
+                        
                 document.getElementById('power').innerHTML = power;
                 document.getElementById('pace').innerHTML = pace;
                 document.getElementById('distance').innerHTML = distance;
                 document.getElementById('calhr').innerHTML = calhr;
-            },3000);
+                
+                
+                if(time == 0 || time < 0){
+                  time = 0;
+                }
+                document.getElementById('time').innerHTML = time;
+             
+            }, 1000);
+
+              
+
+    
+          
+            
+            
+            
       </script>
 </body>
 </html>
