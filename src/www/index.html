@@ -91,7 +91,8 @@
             var calhr = '0';
             var time = '0';
             var isDisconnected = 'false';
-            var endDis = 0;
+            var endDis = '0';
+            var startDis = '0';
             
             function Sound(source, volume, loop)
               {
@@ -179,17 +180,21 @@
                 document.getElementById('calhr').innerHTML = calhr;
                 
                 if(time == 29){
-                  var startDis = distance;
+                  startDis = distance;
+                  console.log(startDis);
                   endDis = 0;
                   document.getElementById('enddis').innerHTML = endDis;
                 }
 
+                
+                if(time == 1){
+                  console.log(distance)
+                  endDis = Math.round(distance - startDis);
+                  document.getElementById('enddis').innerHTML = endDis;
+                }
 
                 if(time == 0 || time < 0){
                   time = 0;
-                  endDis = distance - startDis;
-                  document.getElementById('enddis').innerHTML = endDis;
-
                 }
                 document.getElementById('time').innerHTML = time;
              
