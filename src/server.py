@@ -2,7 +2,6 @@ import socket
 import json
 import sys
 
-
 HOST = '127.0.0.1'
 PORT = 8000
 
@@ -15,7 +14,7 @@ distance = '0'
 calhr = '0'
 disconnect = False
 gameEnded = False
-gameTime = 30
+gameTime = 30 # time in secondes for each user. 
 counter = gameTime 
 
 
@@ -27,21 +26,9 @@ try:
     serverSocket.listen()
     print(f'Server is up. Listening for requests on {HOST}:{PORT}')
 except OSError:
-    sys.exit('The address is in use plseas wait 1 min before trying again')
-# function to check if the monitor is not in use. 
-# it checks the speed and if the speed hasent changed for 15 secondes it returns true.
-def isOff(MSGspeed , speed):
-    global counter
-    if counter == 45:
-        counter = 0
-        return True
-    if speed == MSGspeed:
-        counter=counter+1
-    return False
+    sys.exit('The address is in use please wait 1 min before trying again')
 
-# function to calculate the speed based on the limits of the js playback function.
-# TODO increse the speed gradualy
-
+# function to calculate the speed. 
 def calc_speed(speed):
     speed = float(speed / 3)
     speed /= 10
@@ -58,8 +45,6 @@ while True:
         data = tmp.decode('utf-8').partition('\r\n\r\n') # extract the massage body.
         print(f"received connection from {clientAddress[0]}:{clientAddress[1]}  Message: {data[2]}")
         msg = json.loads(data[2]) # convert body to json.
-
-        # TODO send back reset to the gameended.
 
         # the server has a list of actions that he can handle.
         # client send a request to update the speed.
@@ -78,6 +63,7 @@ while True:
 
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
 
+            # if the game has ended the valuse are set to 0. 
             if counter < 0 or counter == 0:
                 speed = '0'
                 power = '0'
@@ -85,10 +71,10 @@ while True:
                 calhr = '0'
                 pace = '0'
 
-        # TODO send reset compleate msg. 
+        # if there is a change in the speed the client will send a game started meassage. 
         elif msg['msg'] == 'gameStarted':
             gameEnded = False
-            counter = gameTime
+            counter = gameTime # reset the game counter. 
 
             a = {"msg" : "OK"}
             resp = json.dumps(a)
@@ -98,11 +84,13 @@ while True:
         # client requests to receive the current speed 
         elif msg['msg'] == 'getData':
             
+            # the web app makes a requests every 1s. 
+            # the server will decrement the game counter every time the web app will request the data.
             counter -= 1
-
+            
+            # if the counter is 0 end the game. 
             if counter == 0:
                 gameEnded = True
-
                 print('game has ended. reseting the values.')
 
             a = {'speed' : calc_speed(int(speed)) , 'power' : power , 'pace' : pace , 'distance' : distance , 'calhr' : calhr , 'disconnected' : disconnect , "time" : counter}
@@ -110,7 +98,8 @@ while True:
             
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: *\nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
         
-        elif msg['msg'] == 'DissconnectError':
+        # monitor gets disconnected. 
+        elif msg['msg'] == 'DisconnectError':
             disconnect = True
 
             a = {"msg" : "Disconnected"}
@@ -118,9 +107,8 @@ while True:
 
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
 
-
-        
-        elif msg['msg'] == 'DissconnectErrorFixed':
+        # monitor gets reconnected. 
+        elif msg['msg'] == 'DisconnectErrorFixed':
             disconnect =  False
 
             a = {"msg" : "Connected"}
@@ -139,6 +127,7 @@ while True:
         clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))        
         clientConnected.shutdown(1)
         pass
+    
     except Exception as e: 
         print(e)
         a = {"msg" : "error"}
