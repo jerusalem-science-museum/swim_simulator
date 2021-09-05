@@ -12,7 +12,7 @@ libusb - `pip install libusb`
 
 ubs packages - `sudo apt-get install python-usb python3-usb`
 
-parallel - `sudo apt-get install parallel`
+pyyaml - `pip install pyyaml`
 
 pyusb - `pip install pyusb`
 

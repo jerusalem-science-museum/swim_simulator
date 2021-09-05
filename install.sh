@@ -5,10 +5,10 @@
 sudo apt-get update
 sudo apt-get upgrade -y
 
-sudo apt-get install -y git python-usb python3-usb ffmpeg python3-pip apache2 parallel
+sudo apt-get install -y git python-usb python3-usb ffmpeg python3-pip apache2 
 
 pip3 install --upgrade pip 
-sudo pip3 install --upgrade libusb pyusb requests
+sudo pip3 install --upgrade libusb pyusb requests pyyaml
 
 # clone the project
 cd ~/Desktop

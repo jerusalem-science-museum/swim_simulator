@@ -15,7 +15,7 @@ calhr = '0'
 time = '0'
 disconnect = False
 gameEnded = False
-gameTime = 30 # time in secondes for each user. 
+gameTime = 45 # time in secondes for each user. 
 counter = gameTime 
 
 
@@ -68,7 +68,6 @@ while True:
             if time == msg_time:
                 speed = '0'
                 power = '0'
-                distance = '0'
                 calhr = '0'
                 pace = '0'
 
