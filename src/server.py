@@ -113,12 +113,12 @@ while True:
         elif msg['msg'] == 'DisconnectError':
             disconnect = True
 
-            a = {"msg" : "Disconnected"}
+            a = {"msg" : "Disconncted"}
             resp = json.dumps(a)
 
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
-            clientConnected.shutdown(1)
 
+            
 
         # monitor gets reconnected. 
         elif msg['msg'] == 'DisconnectErrorFixed':

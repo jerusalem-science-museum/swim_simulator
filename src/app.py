@@ -34,7 +34,7 @@ def get_erg():
 # function to reconnect to the monitor in case of a disconnect while the app is running.
 def reconnect():
     
-    r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'DissconnectError'}).encode('utf-8'))
+    r = requests.post('http://127.0.0.1:8000/', data = json.dumps({'msg' : 'DisconnectError'}).encode('utf-8'))
     resp = r.json() 
     print(resp['msg']) # print the responce from the server.
     
@@ -45,7 +45,7 @@ def reconnect():
             if erg is None:
                 time.sleep(1)
             else:
-                r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'DissconnectErrorFixed'}).encode('utf-8'))
+                r = requests.post('http://127.0.0.1:8000/', data = json.dumps({'msg' : 'DisconnectErrorFixed'}).encode('utf-8'))
                 resp = r.json()
                 print(resp['msg'])
                 return erg
@@ -84,7 +84,7 @@ def run():
     # while loop that send a request to update the speed every X secondes.
     while True:
         try:
-            r = requests.post('http://127.0.0.1:8000', data = json.dumps(get_data(monitor)).encode('utf-8'))
+            r = requests.post('http://127.0.0.1:8000/', data = json.dumps(get_data(monitor)).encode('utf-8'))
             resp =  r.json()
             print(resp) # print the responce from the server.
 
@@ -100,7 +100,7 @@ def run():
                     if resp_speed == get_metric('power' , monitor) or get_metric('power' , monitor) == 0:
                         time.sleep(1)
                     else:
-                        r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'gameStarted'}).encode('utf-8'))
+                        r = requests.post('http://127.0.0.1:8000/', data = json.dumps({'msg' : 'gameStarted'}).encode('utf-8'))
                         resp =  r.json()
                         print(resp) # print the responce from the server.
                         break
@@ -115,7 +115,6 @@ def run():
             print('The monitor is not connected.')
 
         except Exception as e:
-            print(e)
             print('An error has occurred')
             print('The server might be down.')
         
