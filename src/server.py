@@ -2,6 +2,15 @@ import socket
 import json
 import sys
 
+import logging.config
+import yaml
+
+# configure the logger with a yaml conf file.
+with open('src/conf/logger.yaml', 'r') as stream:
+    config = yaml.load(stream, Loader=yaml.FullLoader)
+
+logging.config.dictConfig(config)
+
 HOST = '127.0.0.1'
 PORT = 8000
 
@@ -17,7 +26,7 @@ disconnect = False
 gameEnded = False
 gameTime = 45 # time in secondes for each user. 
 counter = gameTime 
-
+users = 0
 
 serverSocket =  socket.socket(socket.AF_INET , socket.SOCK_STREAM)
 
@@ -36,6 +45,10 @@ def calc_speed(speed):
     speed = max(speed, 0)
     speed = min(speed,1.5)
     return speed
+
+def log_stats(num_users , distance):
+    logging.info('users' + num_users)
+    logging.info('the distance' + distance)
 
 while True:
     (clientConnected , clientAddress) = serverSocket.accept()
@@ -94,6 +107,8 @@ while True:
         # client requests to receive the current speed 
         elif msg['msg'] == 'getData':
             
+            if counter == gameTime:
+                startDis = distance
             # the web app makes a requests every 1s. 
             # the server will decrement the game counter every time the web app will request the data.
             counter -= 1
@@ -101,7 +116,9 @@ while True:
             # if the counter is 0 end the game. 
             if counter == 0:
                 gameEnded = True
+                users += 1
                 print('game has ended. reseting the values.')
+                log_stats(users , distance - startDis)
 
             a = {'speed' : calc_speed(int(speed)) , 'power' : power , 'pace' : pace , 'distance' : distance , 'calhr' : calhr , 'disconnected' : disconnect , "time" : counter}
             resp = json.dumps(a)
