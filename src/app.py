@@ -6,6 +6,15 @@ import sys
 import time
 import requests
 
+import logging.config
+import yaml
+
+with open('src/conf/logger.yaml', 'r') as stream:
+    config = yaml.load(stream, Loader=yaml.FullLoader)
+
+logging.config.dictConfig(config)
+
+
 class DisconnectError(Exception):
     pass
 
@@ -16,7 +25,7 @@ def check_connection():
             if r.text:
                 return True     
         except Exception as e:
-            print('server might be down')
+            logging.info('Server might be down')
         time.sleep(1)
 
 # func to establish connection to the monitor
@@ -29,6 +38,7 @@ def get_erg():
         for i in erg_list:
             return conn.PyErg(i)
     except:
+        logging.exception('monitor is not connected')
         sys.exit('An error has occurred. The monitor is not connected.\n Or the user isnt root.')
 
 # function to reconnect to the monitor in case of a disconnect while the app is running.
@@ -71,7 +81,7 @@ def get_metric(metric , monitor):
     try:
         return data[metric]
     except:
-        print('An invalid metric has been requested from the monitor.')
+        logging.info('An invalid metric has been requested from the monitor.')
 
 
 # the main function that runs the client.
@@ -106,17 +116,19 @@ def run():
                         break
 
         except UnboundLocalError:
+            logging.warning('Monitor disconnected')
             monitor = reconnect()
 
         except DisconnectError:
+            logging.warning('Monitor disconnected')
             monitor = reconnect()
 
         except AttributeError:
-            print('The monitor is not connected.')
+            logging.info('The monitor is not connected.')
 
         except Exception as e:
-            print('An error has occurred')
-            print('The server might be down.')
+            logging.error(e)
+            logging.info('The server might be down.')
         
         time.sleep(0.3) # sleep for 1 secondes. 
 

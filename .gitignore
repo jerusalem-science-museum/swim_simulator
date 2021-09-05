@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 src/test.py
+src/www/sound.wav
