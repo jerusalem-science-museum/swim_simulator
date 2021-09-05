@@ -9,6 +9,16 @@ import requests
 class DisconnectError(Exception):
     pass
 
+def check_connection():
+    while True:
+        try:
+            r =  requests.post('http://127.0.0.1:8000/' , data = json.dumps({'msg' : 'Testconn'}).encode('utf-8'))
+            if r.text:
+                return True     
+        except Exception as e:
+            print('server might be down')
+        time.sleep(1)
+
 # func to establish connection to the monitor
 # returns the object for comunicating with the monitor 
 # exits the program on error
@@ -24,7 +34,7 @@ def get_erg():
 # function to reconnect to the monitor in case of a disconnect while the app is running.
 def reconnect():
     
-    r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'DisconnectError'}).encode('utf-8'))
+    r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'DissconnectError'}).encode('utf-8'))
     resp = r.json() 
     print(resp['msg']) # print the responce from the server.
     
@@ -35,7 +45,7 @@ def reconnect():
             if erg is None:
                 time.sleep(1)
             else:
-                r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'DisconnectErrorFixed'}).encode('utf-8'))
+                r = requests.post('http://127.0.0.1:8000', data = json.dumps({'msg' : 'DissconnectErrorFixed'}).encode('utf-8'))
                 resp = r.json()
                 print(resp['msg'])
                 return erg
@@ -48,7 +58,7 @@ def get_data(monitor):
 
     data = monitor.get_monitor()
 
-    return {'msg' : 'updateData', 'speed' : data['power'] , 'pace' : data['pace'] , 'distance' : data['distance'] , 'calhr' : data['calhr'] , "started" : True}
+    return {'msg' : 'updateData', 'speed' : data['power'] , 'pace' : data['pace'] , 'distance' : data['distance'] , 'calhr' : data['calhr'] , 'time' : data['time'], "started" : True}
 
 # func that returns the raw data based on the disaired metric
 def get_metric(metric , monitor):
@@ -66,10 +76,10 @@ def get_metric(metric , monitor):
 
 # the main function that runs the client.
 def run():
-    
-    monitor = get_erg()
-    if monitor is None:
-        monitor =  reconnect()
+    if check_connection() == True:
+        monitor = get_erg()
+        if monitor is None:
+            monitor =  reconnect()
 
     # while loop that send a request to update the speed every X secondes.
     while True:
@@ -78,12 +88,12 @@ def run():
             resp =  r.json()
             print(resp) # print the responce from the server.
 
-            # if the server send a game ended meassage it will sleep for 10s then it will wait for a change in the monitor.
+            # if the sever send a reset messeage the app will sleep until there is a change in the speed.
             if resp['ended'] == True:
                 resp_speed = resp['speed']
                 print('game ended')
-                time.sleep(10) # sleep for 10s
-                resp_speed = get_metric('power' , monitor) # if there is a change in the speed during the wait it will change the responce speed. 
+                time.sleep(10)
+                resp_speed  = get_metric('power' , monitor)
 
                 while True:
                     # if the speed from the server and the speed that the monitor is reporting are the same it will sleep. 
@@ -105,10 +115,11 @@ def run():
             print('The monitor is not connected.')
 
         except Exception as e:
+            print(e)
             print('An error has occurred')
             print('The server might be down.')
         
-        time.sleep(0.3) # sleep for 0.3 secondes. 
+        time.sleep(0.3) # sleep for 1 secondes. 
 
 
 if __name__ == '__main__':

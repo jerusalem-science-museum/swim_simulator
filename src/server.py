@@ -12,6 +12,7 @@ power = '0'
 pace = '0'
 distance = '0'
 calhr = '0'
+time = '0'
 disconnect = False
 gameEnded = False
 gameTime = 30 # time in secondes for each user. 
@@ -55,6 +56,7 @@ while True:
             pace = round(msg['pace'])
             distance = msg['distance']
             calhr = round(msg['calhr'])
+            msg_time = msg['time']
 
 
             print(f"Data updated. current speed: {speed} , pace: {pace} , distance: {distance} , calhr: {calhr} ")
@@ -62,6 +64,15 @@ while True:
             resp = json.dumps(a)
 
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
+
+            if time == msg_time:
+                speed = '0'
+                power = '0'
+                distance = '0'
+                calhr = '0'
+                pace = '0'
+
+            time = msg_time
 
             # if the game has ended the valuse are set to 0. 
             if counter < 0 or counter == 0:
@@ -106,12 +117,22 @@ while True:
             resp = json.dumps(a)
 
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
+            clientConnected.shutdown(1)
+
 
         # monitor gets reconnected. 
         elif msg['msg'] == 'DisconnectErrorFixed':
             disconnect =  False
 
             a = {"msg" : "Connected"}
+            resp = json.dumps(a)
+
+            clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
+        
+        elif msg['msg'] == 'Testconn':
+            disconnect =  False
+
+            a = {"msg" : "OK"}
             resp = json.dumps(a)
 
             clientConnected.send(f"""HTTP/1.1 200 OK\nServer: row-sim server 1.0\nAccess-Control-Allow-Origin: * \nContent-Type: application/json \nConnection: keep-alive\n\n{resp}\n""".encode('utf-8'))
