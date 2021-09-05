@@ -11,7 +11,7 @@ handlers:
     stream: ext://sys.stdout
   file:
     class: logging.handlers.RotatingFileHandler
-    level: WARNING
+    level: INFO
     formatter: simple
     filename: src/logs/app.log
     maxBytes: 500000000 # 500MB
