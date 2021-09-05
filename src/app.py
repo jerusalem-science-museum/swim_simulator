@@ -9,6 +9,7 @@ import requests
 import logging.config
 import yaml
 
+# configure the logger with a yaml conf file.
 with open('src/conf/logger.yaml', 'r') as stream:
     config = yaml.load(stream, Loader=yaml.FullLoader)
 
@@ -18,6 +19,7 @@ logging.config.dictConfig(config)
 class DisconnectError(Exception):
     pass
 
+# function that is called at the start of the program and pings the server until it recives a responce. 
 def check_connection():
     while True:
         try:
@@ -86,7 +88,7 @@ def get_metric(metric , monitor):
 
 # the main function that runs the client.
 def run():
-    if check_connection() == True:
+    if check_connection():
         monitor = get_erg()
         if monitor is None:
             monitor =  reconnect()
