@@ -14,7 +14,6 @@ sudo pip3 install --upgrade libusb pyusb requests pyyaml
 cd ~/Desktop
 git clone https://github.com/jerusalem-science-museum/swim_simulator
 cd swim_simulator
-git pull
 
 # setup the apache2 configuration
 sudo rm /etc/apache2/sites-enabled/000-default.conf
@@ -27,3 +26,6 @@ service apache2 reload
 
 # change ownership 
 sudo chown www-data:mada src/www/video.mp4
+
+mkdir src/logs
+
