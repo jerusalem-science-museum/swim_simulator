@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@700;800&display=swap');
+
+#video {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+}
+
+.navbar-custom{
+    background-color: #fffaed;
+}
+
+.bt-text{
+    color: #244b84;
+    font-weight: 800;
+    font-size: 1.05rem;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.bt-lable{
+    padding-right: 80px;
+}
+
+.box{
+    position:relative;
+}
+.box2{
+    position:absolute;
+    bottom:0;
+    right:0;
+    height: 70px;
+    width: 70px;
+    border: #244b84 solid 3px;
+    text-align: center;
+}
+
+.clock{
+    position:absolute;
+    top:0;
+    left:0;
+    background-color: #fffaed;
+    height: 70px;
+    width: 245px;
+    margin: 12px;
+    text-align: center;
+}
+
+.ck-text{
+    color: #244b84;
+    font-weight: 700;
+    font-size: 2.75rem;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.distance{
+    padding-top: 50px;
+    color: #244b84;
+    font-weight: 700;
+    font-size: 1.35rem;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.start-screen{
+    background-color: #244b84;
+    width: 50vw;
+    height: 50vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.content{
+    padding-top: 4rem;
+}
+
+.start-text{
+    color: #fffaed;
+    font-weight: 700;
+    font-size: 2rem;
+    font-family: 'Open Sans', sans-serif;
+}

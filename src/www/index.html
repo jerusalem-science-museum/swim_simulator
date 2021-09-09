@@ -6,93 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="js/jqurey-3.6.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.css">    
-    <!-- TODO install jqurey and bootstrap not from cdn-->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">    
     <title>Rowing Simulator</title>
-    <style>
-
-        .nav-item{
-          padding-right: 1.2em;
-          padding-left: 1.2rem;
-          text-align: center;
-        }
-
-        #video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-        }
-        #content {
-            position: fixed;
-            bottom: 1;
-            color: red;
-            width: 100%;
-            padding: 5px;
-        }
-        #diss{
-          height: 25px;
-          width: 25px;
-          background-color: green;
-          border-radius: 50%;
-          display: inline-block;
-        }
-    </style>
 </head>
 <body>
     <video autoplay muted width="320" height="240" controls loop id="video" >
         <source src="video.mp4" type="video/mp4">
     </video>  
     
-    <nav class="navbar navbar-expand-lg navbar-light fixed-bottom bg-light">
-      <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-          <ul class="navbar-nav mr-auto">
-              <li class="nav-item">
-                  <h5>Power</h5>
-                  <div id="power"></div>
-              </li>
-              <li class="nav-item">
-                <h5>Pace</h5>
-                <div id="pace"></div>
-              </li>
-              <li class="nav-item">
-                <h5>Distance</h5>
-                <div id="distance"></div>
-              </li>
-              <li class="nav-item">
-                <h5>Calories</h5>
-                <div id="calhr"></div>
-              </li>
-              <li class="nav-item">
-                <h5>Time</h5>
-                <div id="time"></div>
-              </li>
-              <li class="nav-item">
-                <h5>You have traveled:</h5>
-                <div id="enddis"></div>
-              </li>
-              <li class="nav-item">
-                <h5>Connected</h5>
-                <div id="diss"></div>
-              </li>
-          </ul>
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-bottom">
+      <div class="container">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+         </button>
+  
+          <div class="collapse navbar-collapse flex-column align-items-end" id="navbarCollapse">
+              <div class="navbar-nav mb-lg-0 bt-lable">
+                 <span class="bt-text">המרחק שחתרת במטרים</span>
+              </div>
+              <div class="navbar-nav mb-lg-0 bt-lable">
+                <span class="bt-text">المسافة التي جذفتها بالأمتار</span>
+              </div>
+              <div class="navbar-nav mb-lg-0 bt-lable">
+                <span class="bt-text">The distance you rowed in meters</span>
+              </div>
+              <div class="box">
+                <div class="box2">
+                  <span class="distance" id="distance"></span>
+                </div>
+              </div>
+          </div>
       </div>
   </nav>
+
+  <div class="clock">
+    <span class="ck-text">00:</span><span class="ck-text" id="time">00</span>
+  </div>
+
+
+  <div class="start-screen" id="st">
+    <div class="content">
+      <span class="start-text">התחילו לחתור</span><br>
+      <span class="start-text">ابدأ التجديف</span><br>
+      <span class="start-text">Start rowing</span>
+    </div>
+  </div>
   
       
       <script>
             
             var speed = '0';
-            var new_speed = '0';
-            var power =  '0';
             var distance = '0';
-            var pace = '0';
-            var calhr = '0';
             var time = '0';
             var isDisconnected = 'false';
             var endDis = '0';
             var startDis = '0';
+
+            var start_ck = 0;
 
 
             function get_data(){
@@ -109,12 +80,8 @@
                             console.log('The server might be down.')
                         }
                         speed = data.speed;
-                        power = data.power;
-                        pace = data.pace;
                         distance = data.distance;
-                        calhr = data.calhr;
                         time =  data.time;
-                        isDisconnected = data.disconnected
                     }
                 })
             }
@@ -122,38 +89,46 @@
 
             setInterval(() => {
               get_data();
-              
-              if(isDisconnected == true){
-                  document.getElementById('diss').style.backgroundColor = 'red';
-                }
-              else{
-                document.getElementById('diss').style.backgroundColor = 'green';
-                }
 
                 const video =  document.querySelector('video'); 
                 video.playbackRate = speed;
-                        
-                document.getElementById('power').innerHTML = power;
-                document.getElementById('pace').innerHTML = pace;
-                document.getElementById('distance').innerHTML = distance;
-                document.getElementById('calhr').innerHTML = calhr;
+                
+
+                document.getElementById('distance').innerHTML = distance + 'm';
                 
                 if(time == 44){
                   startDis = distance;
                   endDis = 0;
                   document.getElementById('enddis').innerHTML = endDis;
+                  start_ck = 0;
                 }
 
+                if(time > 0){
+                  $("#st").fadeOut();
+                }
+                else{
+                  if(time == 0){
+                    $("#st").fadeIn()
+                  }
+                }
                 
                 if(time == 1){
                   endDis = Math.round(distance - startDis);
-                  document.getElementById('enddis').innerHTML = endDis;
+                  document.getElementById('enddis').innerHTML = endDis + 'm';
                 }
 
                 if(time == 0 || time < 0){
-                  time = 0;
+                  time = 00;
+                  start_ck ++;
                 }
-                document.getElementById('time').innerHTML = time;
+                
+                if(time < 10){
+                  document.getElementById('time').innerHTML = '0' + time;
+
+                }
+                else{
+                  document.getElementById('time').innerHTML = time;
+                }
              
             }, 1000);
 
