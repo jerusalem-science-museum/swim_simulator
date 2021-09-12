@@ -123,6 +123,8 @@
     position:absolute;
     right: 0;
     margin-right: 10px;
+
+
 }
 
 .right .bt-text{
@@ -130,5 +132,4 @@
     font-weight: 800;
     font-size: 1.05rem;
     font-family: 'Open Sans', sans-serif;
-    direction: ltr;
 }
