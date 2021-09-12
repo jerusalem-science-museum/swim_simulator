@@ -118,7 +118,7 @@ while True:
                 gameEnded = True
                 users += 1
                 print('game has ended. reseting the values.')
-                log_stats(users , distance - startDis)
+                #log_stats(users , distance - startDis)
 
             a = {'speed' : calc_speed(int(speed)) , 'power' : power , 'pace' : pace , 'distance' : distance , 'calhr' : calhr , 'disconnected' : disconnect , "time" : counter}
             resp = json.dumps(a)
