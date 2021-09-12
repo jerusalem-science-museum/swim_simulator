@@ -109,3 +109,26 @@
     text-align: center;
     display: none;
 }
+
+.footer{
+    background-color: #fffaed;
+    display: block;
+    height: 90px;
+    width: 200vh;
+    position: absolute;
+    bottom: 0;
+}
+
+.right{
+    position:absolute;
+    right: 0;
+    margin-right: 10px;
+}
+
+.right .bt-text{
+    color: #244b84;
+    font-weight: 800;
+    font-size: 1.05rem;
+    font-family: 'Open Sans', sans-serif;
+    direction: ltr;
+}

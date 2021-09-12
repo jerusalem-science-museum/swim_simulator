@@ -5,8 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="js/jqurey-3.6.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/style.css">    
     <title>Rowing Simulator</title>
 </head>
@@ -15,33 +13,27 @@
         <source src="video.mp4" type="video/mp4">
     </video>  
     
-    <nav class="navbar navbar-expand-lg navbar-custom fixed-bottom">
-      <div class="container">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-             <span class="navbar-toggler-icon"></span>
-         </button>
-  
-          <div class="collapse navbar-collapse flex-column align-items-end" id="navbarCollapse">
-              <div class="navbar-nav mb-lg-0 bt-lable">
-                 <span class="bt-text">המרחק שחתרת במטרים</span>
-              </div>
-              <div class="navbar-nav mb-lg-0 bt-lable">
-                <span class="bt-text">المسافة التي جذفتها بالأمتار</span>
-              </div>
-              <div class="navbar-nav mb-lg-0 bt-lable">
-                <span class="bt-text">The distance you rowed in meters</span>
-              </div>
-              <div class="box">
-                <div class="box2">
-                  <span class="distance" id="distance"></span>
-                </div>
-              </div>
-          </div>
-      </div>
-  </nav>
-
   <div class="clock">
     <span class="ck-text">00:</span><span class="ck-text" id="time">00</span>
+  </div>
+
+  <div class="footer">
+    <div class="right">
+      <div class="navbar-nav mb-lg-0 bt-lable">
+        <span class="bt-text">המרחק שחתרת במטרים</span>
+     </div>
+     <div class="navbar-nav mb-lg-0 bt-lable">
+       <span class="bt-text">المسافة التي جذفتها بالأمتار</span>
+     </div>
+     <div class="navbar-nav mb-lg-0 bt-lable">
+       <span class="bt-text">The distance you rowed in meters</span>
+     </div>
+     <div class="box">
+       <div class="box2">
+         <span class="distance" id="distance"></span>
+       </div>
+     </div>
+    </div>
   </div>
 
 
@@ -73,8 +65,8 @@
             var isDisconnected = 'false';
             var endDis = '0';
             var startDis = '0';
-
-            var reset_time = 44;
+            var perv_speed = '0';
+            var reset_time = 59;
 
             function hidePrompt(id){
               document.getElementById(id).style.display = 'none'; 
@@ -108,10 +100,12 @@
 
             setInterval(() => {
               get_data();
-
-                const video =  document.querySelector('video'); 
-                video.playbackRate = speed;
                 
+              const video =  document.querySelector('video'); 
+                if (speed != perv_speed){
+                  video.playbackRate = speed;
+                  perv_speed = speed;
+                }
 
                 document.getElementById('distance').innerHTML = distance + 'm';
                 
@@ -124,7 +118,6 @@
                 
                    if(time == 1){
                     endDis = Math.round(distance - startDis);
-                    document.getElementById('enddis').innerHTML = endDis;
                   }
                 
                 if(time == reset_time - 1){
@@ -137,6 +130,7 @@
                 }
 
                 if(time == -1){
+                  document.getElementById('enddis').innerHTML = endDis;
                   showPrompt('et');
                 }
 

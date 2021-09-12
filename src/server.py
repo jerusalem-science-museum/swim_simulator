@@ -24,7 +24,7 @@ calhr = '0'
 time = '0'
 disconnect = False
 gameEnded = False
-gameTime = 45 # time in secondes for each user. 
+gameTime = 60 # time in secondes for each user. 
 counter = gameTime 
 users = 0
 
