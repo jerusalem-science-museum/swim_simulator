@@ -78,3 +78,9 @@ Then run the start script
 If you want to close the app run:
 
 `pkill python`
+
+
+### Video Format 
+
+due to a bug in firefox some spesific encoding of MP4 files dont load correctly. 
+there for the video that is beeing used shuled be encoded to WEBM format. 

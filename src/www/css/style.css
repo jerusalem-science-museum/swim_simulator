@@ -72,6 +72,7 @@
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     text-align: center;
+    display: block;
 }
 .content{
     padding-top: 4rem;
@@ -80,6 +81,31 @@
 .start-text{
     color: #fffaed;
     font-weight: 700;
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-family: 'Open Sans', sans-serif;
+}
+
+.line{
+    display: block;
+    height: 1px;
+    width: 50vh;
+    border: 0;
+    border-top: 4px solid #fffaed;
+    margin: 1em 0;
+    padding: 0;
+    margin-left: 25vh;
+
+}
+
+.end-screen{
+    background-color: #244b84;
+    width: 50vw;
+    height: 50vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: none;
 }

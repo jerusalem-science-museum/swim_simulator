@@ -52,6 +52,17 @@
       <span class="start-text">Start rowing</span>
     </div>
   </div>
+
+  <div class="end-screen" id="et">
+    <div class="content">
+      <span class="start-text">הצלחת להתקדם</span><br>
+      <span class="start-text">لقد نجحت</span><br>
+      <span class="start-text">You passed</span>
+      <div id="enddis" class="start-text">0</div>
+      <div class="line"></div>
+      <span class="start-text">meters | أمتار |  מטרים</span>
+    </div>
+  </div>
   
       
       <script>
@@ -63,7 +74,15 @@
             var endDis = '0';
             var startDis = '0';
 
-            var start_ck = 0;
+            var reset_time = 44;
+
+            function hidePrompt(id){
+              document.getElementById(id).style.display = 'none'; 
+            }
+
+            function showPrompt(id){
+              document.getElementById(id).style.display = 'block'; 
+            }
 
 
             function get_data(){
@@ -96,32 +115,35 @@
 
                 document.getElementById('distance').innerHTML = distance + 'm';
                 
-                if(time == 44){
+                if(time == reset_time){
                   startDis = distance;
                   endDis = 0;
                   document.getElementById('enddis').innerHTML = endDis;
                   start_ck = 0;
                 }
-
-                if(time > 0){
-                  $("#st").fadeOut();
-                }
-                else{
-                  if(time == 0){
-                    $("#st").fadeIn()
+                
+                   if(time == 1){
+                    endDis = Math.round(distance - startDis);
+                    document.getElementById('enddis').innerHTML = endDis;
                   }
-                }
                 
-                if(time == 1){
-                  endDis = Math.round(distance - startDis);
-                  document.getElementById('enddis').innerHTML = endDis + 'm';
+                if(time == reset_time - 1){
+                  hidePrompt('st');
                 }
 
-                if(time == 0 || time < 0){
-                  time = 00;
-                  start_ck ++;
+                if(time == -10){
+                  hidePrompt('et');
+                  showPrompt('st');
                 }
-                
+
+                if(time == -1){
+                  showPrompt('et');
+                }
+
+                if(time == 0 | time < 0){
+                  time = 00;
+                }
+
                 if(time < 10){
                   document.getElementById('time').innerHTML = '0' + time;
 
