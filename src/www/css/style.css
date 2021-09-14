@@ -81,7 +81,7 @@
 .start-text{
     color: #fffaed;
     font-weight: 700;
-    font-size: 1.75rem;
+    font-size: 2.5rem;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -114,7 +114,7 @@
     background-color: #fffaed;
     display: block;
     height: 90px;
-    width: 200vh;
+    width: 100vw;
     position: absolute;
     bottom: 0;
 }
