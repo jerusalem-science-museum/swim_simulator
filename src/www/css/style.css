@@ -36,6 +36,11 @@
     text-align: center;
 }
 
+.box2 span{
+    font-size: 20px;
+}
+
+
 .clock{
     position:absolute;
     top:0;
@@ -88,7 +93,7 @@
 .line{
     display: block;
     height: 1px;
-    width: 50vh;
+    width: 25vw;
     border: 0;
     border-top: 4px solid #fffaed;
     margin: 1em 0;
