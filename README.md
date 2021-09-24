@@ -2,7 +2,12 @@
 
 ### Setup 
 
-To install the app correctly please follow these steps:
+To install the app correctly please follow these steps: 
+or run the setup script. 
+
+```
+./install.sh
+```
 
 #### Install all of the required packages
 
@@ -41,8 +46,9 @@ run:
 
 add the following lines to the configuration:
 ```
-		DocumentRoot /home/mada/Desktop/swin_simulator/src/www/
-		<Directory /home/mada/Desktop/swin_simulator/src/www/>
+ServerAdmin webmaster@localhost
+        DocumentRoot /home/mada/Desktop/swim_simulator/src/www/
+		<Directory /home/mada/Desktop/swim_simulator/src/www/>
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride None
                 Require all granted
@@ -65,22 +71,18 @@ navigate to `http://127.0.0.1` to make sure the installation was successful.
 
 ### Running the app 
 
-The app requires root permitions in order to run correctly.
+The app requires root permissions in order to run correctly.
 
 run:
-
-`sudo su`
-
-Then run the start script 
 
 `./run.sh`
 
 If you want to close the app run:
 
-`pkill python`
+`pkill python 'or run' ./stop.sh`
 
 
 ### Video Format 
 
-due to a bug in firefox some spesific encoding of MP4 files dont load correctly. 
-there for the video that is beeing used shuled be encoded to WEBM format. 
+due to a bug in firefox some specific encoding of MP4 files dont load correctly. 
+there for the video that is being used should be encoded to WEBM format. 
