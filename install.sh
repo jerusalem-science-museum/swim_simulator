@@ -14,6 +14,7 @@ sudo pip3 install --upgrade libusb pyusb requests pyyaml
 cd ~/Desktop
 git clone https://github.com/jerusalem-science-museum/swim_simulator
 cd swim_simulator
+git lfs install
 git lfs pull
 # setup the apache2 configuration
 
