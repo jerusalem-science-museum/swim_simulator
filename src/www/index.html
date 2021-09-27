@@ -132,8 +132,14 @@
                 
               const video =  document.querySelector('video'); 
                 if (speed != perv_speed){
-                  video.playbackRate = speed;
-                  perv_speed = speed;
+                  if (speed >= 1){
+                    video.playbackRate = 1.5;
+                    perv_speed = speed;
+                  }
+                  else{
+                    video.playbackRate = speed;
+                    perv_speed = speed;
+                  }
                 }
 
                 document.getElementById('distance').innerHTML =  Math.round(distance - startDis);
