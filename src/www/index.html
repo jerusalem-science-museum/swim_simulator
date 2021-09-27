@@ -136,7 +136,7 @@
                   perv_speed = speed;
                 }
 
-                document.getElementById('distance').innerHTML = distance - startDis;
+                document.getElementById('distance').innerHTML =  Math.round(distance - startDis);
                 
                 if(time == reset_time){
                   startDis = distance;
@@ -147,6 +147,7 @@
                 
                    if(time == 1){
                     endDis = Math.round(distance - startDis);
+                    startDis = '0';
                   }
                 
                 if(time == reset_time - 1){
