@@ -45,6 +45,23 @@
 }
 
 
+.box3{
+    position:absolute;
+    bottom:0;
+    left:0;
+    height: 70px;
+    width: 100px;
+    border: #244b84 solid 3px;
+    text-align: center;
+    margin-left: 8rem;
+}
+.box3 span{
+    font-size: 20px;
+    vertical-align:middle;
+    padding-bottom: 20px;
+}
+
+
 .clock{
     position:absolute;
     top:0;
@@ -145,6 +162,19 @@
 }
 
 .right .bt-text{
+    color: #244b84;
+    font-weight: 800;
+    font-size: 1.05rem;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.left{
+    position:absolute;
+    left: 0;
+    margin-left: 10px; 
+}
+
+.left .bt-text{
     color: #244b84;
     font-weight: 800;
     font-size: 1.05rem;

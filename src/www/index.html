@@ -63,6 +63,18 @@
        </div>
      </div>
     </div>
+    <div class="left">
+      <div class="navbar-nav mb-lg-0 bt-lable">
+        <span class="bt-text">שיא מקומי</span>
+        <span class="bt-text">السجل المحلي</span>
+        <span class="bt-text">Local Record</span>
+        <div class="box">
+          <div class="box3">
+            <span class="distance" id="record">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 
@@ -96,6 +108,7 @@
             var startDis = '0';
             var perv_speed = '0';
             var reset_time = 59;
+            var local_record = 0;
 
             function hidePrompt(id){
               document.getElementById(id).style.display = 'none'; 
@@ -153,6 +166,16 @@
                 
                    if(time == 1){
                     endDis = Math.round(distance - startDis);
+                    
+                    if (local_record != 0 && endDis >= local_record){
+                      local_record = endDis;
+                      document.getElementById('record').innerHTML = local_record;
+                    }
+                    
+                    if(local_record == 0){
+                      local_record = endDis;
+                      document.getElementById('record').innerHTML = local_record;
+                    }
                     startDis = '0';
                   }
                 
@@ -160,7 +183,7 @@
                   hidePrompt('st');
                 }
 
-                if(time == -10){
+                if(time == -16){
                   hidePrompt('et');
                   showPrompt('st');
                 }
