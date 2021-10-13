@@ -96,17 +96,6 @@
       <span class="start-text">meters | أمتار |  מטרים</span>
     </div>
   </div>
-
-  <div class="end-screen" id="et2">
-    <div class="content">
-      <span class="start-text">!שברת את השיא</span><br>
-      <span class="start-text">!لقد حطمت الرقم القياسي</span><br>
-      <span class="start-text">You broke the record!</span>
-      <div id="enddis" class="start-text">0</div>
-      <div class="line"></div>
-      <span class="start-text">meters | أمتار |  מטרים</span>
-    </div>
-  </div>
   
       
       <script>
@@ -115,7 +104,6 @@
             var distance = '0';
             var time = '0';
             var isDisconnected = 'false';
-            var new_record = false;
             var endDis = '0';
             var startDis = '0';
             var perv_speed = '0';
@@ -181,17 +169,14 @@
                     
                     if (local_record != 0 && endDis >= local_record){
                       local_record = endDis;
-                      new_record = true;
                       document.getElementById('record').innerHTML = local_record;
                     }
                     
                     if(local_record == 0){
                       local_record = endDis;
-                      new_record = true;
                       document.getElementById('record').innerHTML = local_record;
                     }
                     startDis = '0';
-                    new_record = false;
                   }
                 
                 if(time == reset_time - 1){
@@ -200,20 +185,12 @@
 
                 if(time == -16){
                   hidePrompt('et');
-                  hidePrompt('et2');
                   showPrompt('st');
                 }
 
                 if(time == -1){
                   document.getElementById('enddis').innerHTML = endDis;
-                  if ( new_record == true ){
-                    showPrompt('et2');
-                  }
-                  else{
-                    showPrompt('et');
-                  }
-                  
-
+                  showPrompt('et');
                 }
 
                 if(time == 0 | time < 0){
